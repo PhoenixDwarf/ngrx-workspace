@@ -37,9 +37,9 @@ import { RouterLink } from '@angular/router';
         />
       </div>
       <button type="submit" class="w-full" appButton variant="primary">Login</button>
-      <p class="text-center mt-4">
+      <p class="text-sm text-center text-slate-500 mt-4">
         Don't have an account?
-        <a routerLink="/register" class="text-slate-500 hover:underline">Register here</a>
+        <a routerLink="/register" class="text-slate-500 font-medium underline">Register</a>
       </p>
     </form>
   `,
