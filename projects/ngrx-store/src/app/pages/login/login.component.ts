@@ -2,7 +2,6 @@ import { Component, signal } from '@angular/core';
 import { Button } from '../../shared/components/button';
 import { RouterLink } from '@angular/router';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
-import { JsonPipe } from '@angular/common';
 import { FormErrors } from '../../shared/components/form-errors';
 
 @Component({
@@ -39,13 +38,8 @@ import { FormErrors } from '../../shared/components/form-errors';
         />
         <app-form-errors [control]="loginForm.password()" />
       </div>
-      <button
-        type="submit"
-        class="w-full"
-        appButton
-        variant="primary"
-        [disabled]="loginForm().invalid() && loginForm().touched()"
-      >
+      <button type="submit" class="w-full" appButton variant="primary">
+        <!-- [disabled]="loginForm().invalid() && loginForm().touched()" -->
         Login
       </button>
       <p class="text-sm text-center text-slate-500 mt-4">
@@ -64,7 +58,7 @@ export default class LoginComponent {
   loginForm = form(this.loginModel, (rootPath) => {
     required(rootPath.username, { message: 'Username is required' });
     required(rootPath.password, { message: 'Password is required' });
-    minLength(rootPath.password, 6, { message: 'Password must be at least 6 characters' });
+    minLength(rootPath.password, 6, { message: 'Password must be at least 6 characters long' });
   });
 
   onSubmit(event: Event) {
