@@ -22,11 +22,13 @@ export const authFeatures = createFeature({
     on(authActions.loginSuccess, (state, { token }) => ({
       ...state,
       token,
+      isLoading: false,
     })),
 
     on(authActions.loginFailure, (state, { error }) => ({
       ...state,
       token: null,
+      isLoading: false,
       error,
     })),
 

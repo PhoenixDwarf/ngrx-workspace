@@ -1,8 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Button } from '../../shared/components/button';
 import { RouterLink } from '@angular/router';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { FormErrors } from '../../shared/components/form-errors';
+import { Store } from '@ngrx/store';
+import { authActions } from '../../shared/store/auth-actions';
+import { authFeatures } from '../../shared/store/auth-feature';
 
 @Component({
   selector: 'app-login',
@@ -38,9 +41,9 @@ import { FormErrors } from '../../shared/components/form-errors';
         />
         <app-form-errors [control]="loginForm.password()" />
       </div>
-      <button type="submit" class="w-full" appButton variant="primary">
+      <button type="submit" class="w-full" appButton variant="primary" [disabled]="isLoading()">
         <!-- [disabled]="loginForm().invalid() && loginForm().touched()" -->
-        Login
+        {{ isLoading() ? 'Signing in...' : 'Sign in' }}
       </button>
       <p class="text-sm text-center text-slate-500 mt-4">
         Don't have an account?
@@ -50,6 +53,9 @@ import { FormErrors } from '../../shared/components/form-errors';
   `,
 })
 export default class LoginComponent {
+  private readonly store = inject(Store);
+  protected readonly isLoading = this.store.selectSignal(authFeatures.selectIsLoading);
+
   loginModel = signal({
     username: '',
     password: '',
@@ -64,7 +70,7 @@ export default class LoginComponent {
   onSubmit(event: Event) {
     event.preventDefault();
     if (this.loginForm().valid()) {
-      console.log('Login Data: ', this.loginForm().value());
+      this.store.dispatch(authActions.login(this.loginForm().value()));
     } else {
       console.log('Form is invalid');
     }
